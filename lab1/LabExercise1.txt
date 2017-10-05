@@ -1,0 +1,22 @@
+Lab Exercise 1
+
+1. Calculate the gamma statistic for this phylogeny of homalopsid snakes from 
+   Alfaro et al., 2008: snake.tre.
+   
+2. Given this gamma value, what would you conclude about the tempo of speciation in 
+   this clade?
+   
+3. Given that the crown age of the snake radiation is 22 MY and the total richness of 
+   the clade is 34 species, determine whether the observed gamma could be due to the 
+   amount of incomplete sampling in the empirical tree. On the basis of the MCCR test 
+   what can you conclude about the tempo of homalopsid snake diversification?
+   
+4. What is the birth rate and death rate of the homalopsid tree?
+
+5. Find a time-calibrated phylogeny for a group that interests you (ideally with more 
+   than 30 tips and fewer than 200). Do the following: (1) Describe the clade 
+   (including a description of the number of tips in the tree and the total number of 
+   species in the clades) and provide a reference or citation to the source. 
+   (2) Fit a birthdeath model to this tree and report b and d. (3) Perform an MCCR test 
+   and describe whether the gamma value is extreme or not given the level of sampling 
+   in the tree.

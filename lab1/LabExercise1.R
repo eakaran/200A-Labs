@@ -5,7 +5,7 @@
 
 library(phytools)
 
-setwd("~/Dropbox/200A Evolution/Labs/lab1")
+setwd("~/Dropbox/200A_Evolution/Labs/lab1")
 # load tree
 darter.tree <- read.tree("etheostoma_percina_chrono.tre")
 # plot tree
@@ -101,3 +101,35 @@ ltt(coal.tree,add=TRUE,log.lineages=FALSE,col="red",lwd=2,lty="dashed")
 
 # the authors only sampled 201 of 216 species
 # run MCCR test
+library(geiger)
+age <- 25.91862
+richness <- 216
+darterbirth =  (log(richness) - log(2))/age
+darterbirth
+
+richness <- 216
+missing <- 15
+#this simulates gamma values when trees are undersampled.
+#we will grow trees with n=34 and prune them down to 13 taxa
+
+num_simulations<-200 #number of simulations
+g1_null<-numeric(num_simulations) #g1_null will hold the simulated gamma values
+for(i in 1:num_simulations) {
+  sim.bdtree(darterbirth, d=0, stop = "taxa", n=richness)->sim_tree 
+  drop.random(sim_tree, missing)->prune # prune down to the # of taxa in the phylogeny
+  gammaStat(prune)->g1_null[i]
+}
+# create a histogram of the null distribution
+hist(g1_null)
+
+#arrow indicates where the observed gamma falls in the null you just generated
+arrows(darter.gamma, 40, darter.gamma, 0, col="red", lwd=2) 
+
+# Which of the null values are smaller (more negative) than the data?
+smallerNull<-g1_null<=darter.gamma
+# How many TRUEs are there?
+count<-sum(smallerNull)
+
+# finally, what is the p-value?
+mccr_pval<-(count+1)/(num_simulations+1)
+mccr_pval
