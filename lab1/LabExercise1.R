@@ -1,6 +1,7 @@
 # Elizabeth Karan
 # Lab Exercise 1: Introduction to estimating diversification rates
 
+## FIRST: A TUTORIAL
 # 1. Lineage through time plots
 
 library(phytools)
@@ -127,6 +128,131 @@ arrows(darter.gamma, 40, darter.gamma, 0, col="red", lwd=2)
 
 # Which of the null values are smaller (more negative) than the data?
 smallerNull<-g1_null<=darter.gamma
+# How many TRUEs are there?
+count<-sum(smallerNull)
+
+# finally, what is the p-value?
+mccr_pval<-(count+1)/(num_simulations+1)
+mccr_pval
+
+## END OF TUTORIAL
+
+
+# EXERCISES
+
+# Calculate the gamma statistic for this phylogeny of homalopsid snakes from 
+# Alfaro et al., 2008: snake.tre.
+
+library(phytools)
+setwd("~/Dropbox/200A_Evolution/Labs/lab1")
+snake_phy <- read.tree("homalops.phy")
+
+# look at tree
+plotTree(snake_phy,ftype="i",fsize=0.4,type="fan",lwd=1)
+plotTree(snake_phy,ftype="i",fsize=0.4,type="cladogram",lwd=1)
+# I like to look at it this way
+plotTree(snake_phy,ftype="i",fsize=0.4,type="phylogram",lwd=1)
+
+# get an LTT plot
+snakeLTT <- ltt(snake_phy, plot = FALSE); snakeLTT
+# gives a "gamma" statistic of -3.2411
+# A negative gamma statistic suggests that the rate of speciation was more rapid 
+# earlier in the tree
+
+# Given that the crown age of the snake radiation is 22 MY and the total richness of 
+# the clade is 34 species, determine whether the observed gamma could be due to the 
+# amount of incomplete sampling in the empirical tree. On the basis of the MCCR test 
+# what can you conclude about the tempo of homalopsid snake diversification?
+library(geiger)
+age <- 22
+richness <- 34
+# use a purebirth estimate of the the tree based upon their total age and richness
+snakebirth = (log(richness) - log(2))/age
+
+snake_gamma <- snakeLTT$gamma
+
+richness <- 34
+missing <- 13
+#this simulates gamma values when trees are undersampled.
+#we will grow trees with n=34 and prune them down to 13 taxa
+
+num_simulations<-200 #number of simulations
+g1_null<-numeric(num_simulations) #g1_null will hold the simulated gamma values
+for(i in 1:num_simulations) {
+  sim.bdtree(snakebirth, d=0, stop = "taxa", n=richness)->sim_tree 
+  drop.random(sim_tree, missing)->prune # prune down to the # of taxa in the phylogeny
+  gammaStat(prune)->g1_null[i]
+}
+# create a histogram of the null distribution
+hist(g1_null)
+
+#arrow indicates where the observed gamma falls in the null you just generated
+arrows(snake_gamma, 40, snake_gamma, 0, col="red", lwd=2) 
+
+# Which of the null values are smaller (more negative) than the data?
+smallerNull<-g1_null<=snake_gamma
+# How many TRUEs are there?
+count<-sum(smallerNull)
+
+# finally, what is the p-value?
+mccr_pval<-(count+1)/(num_simulations+1)
+mccr_pval
+
+# What is the birth rate and death rate of the homalopsid tree?
+fitbd <- birthdeath(snake_phy)
+bd(fitbd)
+
+
+# Pomacentridae phylogeny with 216 tips (Frédérich, B. et al. 2013)
+poma_tree <- read.nexus("damsels260miltime.tree.txt")
+# take a look at it
+poma_tree
+plotTree(poma_tree,ftype="i",fsize=0.4,type="phylogram",lwd=1)
+# remove the outgroups from tree
+tip <- c("OUG_Centropyge_bicolor", "OUG_Cymatogaster_aggregata", "OUG_Cypho_purpurascens", 
+         "OUG_Dicentrarchus_labrax", "OUG_Embiotoca_jacksoni", "OUG_Ptychochromis_oligacanthus", 
+         "OUG_Semicossyphus_pulcher", "OUG_Thorichthys_meeki")
+poma_only_tree <- drop.tip(poma_tree, tip)
+# take a look at it
+poma_only_tree
+# tree with 208 tips only with species from family Pomacentridae
+plotTree(poma_only_tree,ftype="i",fsize=0.4,type="phylogram",lwd=1)
+# fit a birth-death model
+poma_bd <- birthdeath(poma_only_tree)
+# report b and b
+bd(poma_bd)
+
+# perform MCCR test
+
+# get an LTT plot
+pomaLTT <- ltt(poma_only_tree, plot = FALSE); pomaLTT
+# age of clade in MY
+age <- 50
+# use a purebirth estimate of the the tree based upon their total age and richness
+poma_birth = (log(richness) - log(2))/age
+
+poma_gamma <- pomaLTT$gamma
+
+richness <- 208
+missing <- 178
+#this simulates gamma values when trees are undersampled.
+#we will grow trees with n=34 and prune them down to 13 taxa
+
+num_simulations<-200 #number of simulations
+gamma_null<-numeric(num_simulations) #g1_null will hold the simulated gamma values
+for(i in 1:num_simulations) {
+  sim.bdtree(poma_birth, d=0, stop = "taxa", n=richness)->sim_tree 
+  drop.random(sim_tree, missing)->prune # prune down to the # of taxa in the phylogeny
+  gammaStat(prune)->gamma_null[i]
+}
+# create a histogram of the null distribution
+hist(gamma_null)
+
+#arrow indicates where the observed gamma falls in the null you just generated
+arrows(poma_gamma, 40, poma_gamma, 0, col="red", lwd=2) 
+
+# Which of the null values are smaller (more negative) than the data?
+smallerNull<-gamma_null<=poma_gamma
 # How many TRUEs are there?
 count<-sum(smallerNull)
 

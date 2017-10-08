@@ -3,15 +3,37 @@ Lab Exercise 1
 1. Calculate the gamma statistic for this phylogeny of homalopsid snakes from 
    Alfaro et al., 2008: snake.tre.
    
+   It gives a "gamma" statistic of -3.2411
+   
+   
 2. Given this gamma value, what would you conclude about the tempo of speciation in 
    this clade?
+   
+   A negative gamma statistic suggests that the rate of speciation was more rapid 
+   earlier in the tree; the rate of speciation was historically higher and slowed down
+   more recently. 
+   
    
 3. Given that the crown age of the snake radiation is 22 MY and the total richness of 
    the clade is 34 species, determine whether the observed gamma could be due to the 
    amount of incomplete sampling in the empirical tree. On the basis of the MCCR test 
    what can you conclude about the tempo of homalopsid snake diversification?
    
+   The MCCR test yielded a p-value of 0.009950249 with only one value from the null
+   simulated gamma distribution more negative than the gamma statistic from the original
+   phylogeny. This suggests that the observed gamma could be due to the amount of 
+   incomplete sampling in the given homalopsid tree. With the current level of sampling,
+   the older nodes are more likely to be recovered and the negative gamma statistic 
+   favors more rapid diversification earlier in the tree. However, based on the results
+   of the MCCR test, more recent rates of diversification could be more rapid than what 
+   is represented by this tree with its current level of sampling.
+   
+   
 4. What is the birth rate and death rate of the homalopsid tree?
+   
+   Birth rate: 0.06839495
+   Death rate: 0.00000000
+   
 
 5. Find a time-calibrated phylogeny for a group that interests you (ideally with more 
    than 30 tips and fewer than 200). Do the following: (1) Describe the clade 
@@ -20,3 +42,23 @@ Lab Exercise 1
    (2) Fit a birthdeath model to this tree and report b and d. (3) Perform an MCCR test 
    and describe whether the gamma value is extreme or not given the level of sampling 
    in the tree.
+   
+   (1) I have acquired a phylogeny of fish of the family Pomacentridae; the tree 
+   includes 208 of the 386 species that make up the family (Frédérich, B. et al. 2013).
+   There are also some species in the tree that are not in the family that serve as 
+   outgroups. This tree has 216 tips and I pruned the outgroups for a tree with 208 tips
+   (only a little bit over 200). 
+   
+   (2) Birth rate: 0.0823782
+       Death rate: 0.0000000
+       
+   (3) The MCCR test yielded a p-value of 0.8955224 with 179 values from the null
+   simulated gamma distribution more negative than the gamma statistic from the original
+   Pomacentridae phylogeny. These results suggest that the observed gamma value is 
+   not extreme given the level of sampling in the tree. 
+   
+Reference:
+
+Frédérich, B. et al., 2013. Iterative ecological radiation and convergence during 
+	the evolutionary history of damselfishes (Pomacentridae). The American naturalist, 
+	181(1), pp.94–113. Available at: http://www.ncbi.nlm.nih.gov/pubmed/23234848.
