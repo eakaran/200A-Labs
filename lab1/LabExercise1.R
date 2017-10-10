@@ -5,7 +5,6 @@
 # 1. Lineage through time plots
 
 library(phytools)
-
 setwd("~/Dropbox/200A_Evolution/Labs/lab1")
 # load tree
 darter.tree <- read.tree("etheostoma_percina_chrono.tre")
@@ -29,6 +28,7 @@ is.binary(darter.tree)
 obj<-ltt(darter.tree,plot=FALSE)
 obj
 # make a new LTT plot
+par(mfrow=c(1,1), mar=c(4, 4, 3, 2)) 
 plot(obj,log.lineages=FALSE,main="LTT plot for darters")
 # plot tree and LTT plot together
 plot(obj,show.tree=TRUE,log.lineages=FALSE,main="LTT plot for darters")
@@ -92,6 +92,7 @@ obj<-ltt(coal.tree,log.lineages=FALSE,log="y")
 darter.gamma <- obj$gamma # ltt returns a gamma value as one of its elements
 
 # compare the mean gamma value of 200 pb trees to gamma from the coalescent tree
+par(mfrow=c(1,1), mar=c(4, 4, 3, 2))
 trees<-pbtree(n=100,nsim=200,scale=max(nodeHeights(coal.tree)))
 ltt95(trees,log=TRUE)
 title(main="Simulated coalescent trees compared to pure-birth LTTs")
@@ -165,14 +166,14 @@ snakeLTT <- ltt(snake_phy, plot = FALSE); snakeLTT
 # what can you conclude about the tempo of homalopsid snake diversification?
 library(geiger)
 age <- 22
-richness <- 34
 # use a purebirth estimate of the the tree based upon their total age and richness
+richness <- 34
+missing <- 13
 snakebirth = (log(richness) - log(2))/age
 
 snake_gamma <- snakeLTT$gamma
 
-richness <- 34
-missing <- 13
+
 #this simulates gamma values when trees are undersampled.
 #we will grow trees with n=34 and prune them down to 13 taxa
 
@@ -192,7 +193,7 @@ arrows(snake_gamma, 40, snake_gamma, 0, col="red", lwd=2)
 # Which of the null values are smaller (more negative) than the data?
 smallerNull<-g1_null<=snake_gamma
 # How many TRUEs are there?
-count<-sum(smallerNull)
+count<-sum(smallerNull); count
 
 # finally, what is the p-value?
 mccr_pval<-(count+1)/(num_simulations+1)
@@ -229,14 +230,12 @@ pomaLTT <- ltt(poma_only_tree, plot = FALSE); pomaLTT
 # age of clade in MY
 age <- 50
 # use a purebirth estimate of the the tree based upon their total age and richness
+richness <- 386
+missing <- 178
 poma_birth = (log(richness) - log(2))/age
-
 poma_gamma <- pomaLTT$gamma
 
-richness <- 208
-missing <- 178
-#this simulates gamma values when trees are undersampled.
-#we will grow trees with n=34 and prune them down to 13 taxa
+
 
 num_simulations<-200 #number of simulations
 gamma_null<-numeric(num_simulations) #g1_null will hold the simulated gamma values
@@ -254,7 +253,7 @@ arrows(poma_gamma, 40, poma_gamma, 0, col="red", lwd=2)
 # Which of the null values are smaller (more negative) than the data?
 smallerNull<-gamma_null<=poma_gamma
 # How many TRUEs are there?
-count<-sum(smallerNull)
+count<-sum(smallerNull); count
 
 # finally, what is the p-value?
 mccr_pval<-(count+1)/(num_simulations+1)
